@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "WinUI3_SwapChainPanel_Direct2D (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinUI3_SwapChainPanel_Direct2D (Unpackaged)": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
