@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices;
 using GlobalStructures;
-using System.Reflection.Metadata;
-using System.Security.Permissions;
-//using D3D11;
 
 namespace DXGI
 {  
@@ -93,8 +90,10 @@ namespace DXGI
 
         HRESULT GetDesc(out DXGI_OUTPUT_DESC pDesc);
         HRESULT GetDisplayModeList(DXGI_FORMAT EnumFormat, uint Flags, ref uint pNumModes, DXGI_MODE_DESC pDesc);
+        //HRESULT FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out  DXGI_MODE_DESC pClosestMatch, IUnknown pConcernedDevice);
         HRESULT FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, IntPtr pConcernedDevice);
         HRESULT WaitForVBlank();
+        //HRESULT TakeOwnership(IUnknown pDevice, bool Exclusive);
         HRESULT TakeOwnership(IntPtr pDevice, bool Exclusive);
         void ReleaseOwnership();
         HRESULT GetGammaControlCapabilities(out DXGI_GAMMA_CONTROL_CAPABILITIES pGammaCaps);
@@ -105,154 +104,17 @@ namespace DXGI
         HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
     }
 
-    [ComImport]
-    [Guid("00cddea8-939b-4b83-a340-a685226666cc")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIOutput1 : IDXGIOutput
-    {
-        #region IDXGIOutput
-        #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
-        #endregion
-
-        new HRESULT GetDesc(out DXGI_OUTPUT_DESC pDesc);
-        new HRESULT GetDisplayModeList(DXGI_FORMAT EnumFormat, uint Flags, ref uint pNumModes, DXGI_MODE_DESC pDesc);
-        new HRESULT FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, IntPtr pConcernedDevice);
-        new HRESULT WaitForVBlank();
-        new HRESULT TakeOwnership(IntPtr pDevice, bool Exclusive);
-        new void ReleaseOwnership();
-        new HRESULT GetGammaControlCapabilities(out DXGI_GAMMA_CONTROL_CAPABILITIES pGammaCaps);
-        new HRESULT SetGammaControl(DXGI_GAMMA_CONTROL pArray);
-        new HRESULT GetGammaControl(out DXGI_GAMMA_CONTROL pArray);
-        new HRESULT SetDisplaySurface(IDXGISurface pScanoutSurface);
-        new HRESULT GetDisplaySurfaceData(IDXGISurface pDestination);
-        new HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
-        #endregion
-
-        HRESULT GetDisplayModeList1(DXGI_FORMAT EnumFormat, uint Flags, ref uint pNumModes, out DXGI_MODE_DESC1 pDesc);
-        HRESULT FindClosestMatchingMode1(ref DXGI_MODE_DESC1 pModeToMatch, out DXGI_MODE_DESC1 pClosestMatch, IntPtr pConcernedDevice);
-        HRESULT GetDisplaySurfaceData1(ref IDXGIResource pDestination);
-        HRESULT DuplicateOutput(IntPtr pDevice, out IDXGIOutputDuplication ppOutputDuplication);
-    }
-
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct DXGI_OUTPUT_DESC
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public string DeviceName;
+        string DeviceName;
         public RECT DesktopCoordinates;
         public bool AttachedToDesktop;
         public DXGI_MODE_ROTATION Rotation;
         public IntPtr Monitor;
     }
-    
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_MODE_DESC1
-    {
-        public uint Width;
-        public uint Height;
-        public DXGI_RATIONAL RefreshRate;
-        public DXGI_FORMAT Format;
-        public DXGI_MODE_SCANLINE_ORDER ScanlineOrdering;
-        public DXGI_MODE_SCALING Scaling;
-        public bool Stereo;
-    }
 
-    [ComImport]
-    [Guid("035f3ab4-482e-4e50-b41f-8a7f8bd8960b")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIResource : IDXGIDeviceSubObject
-    {
-        #region <IDXGIDeviceSubObject>
-        #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
-        #endregion
-
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
-        #endregion
-
-        [PreserveSig]
-        HRESULT GetSharedHandle(out IntPtr pSharedHandle);
-        HRESULT GetUsage(out uint pUsage);
-        HRESULT SetEvictionPriority(uint EvictionPriority);
-        HRESULT GetEvictionPriority(out uint pEvictionPriority);
-    }
-
-    [ComImport]
-    [Guid("191cfac3-a341-470d-b26e-a864f428319c")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIOutputDuplication : IDXGIObject
-    {
-        #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
-        #endregion
-
-        void GetDesc(out DXGI_OUTDUPL_DESC pDesc);
-        [PreserveSig]
-        HRESULT AcquireNextFrame(uint TimeoutInMilliseconds, out DXGI_OUTDUPL_FRAME_INFO pFrameInfo, out IDXGIResource ppDesktopResource);
-        HRESULT GetFrameDirtyRects(uint DirtyRectsBufferSize, out RECT pDirtyRectsBuffer, out uint pDirtyRectsBufferSizeRequired);
-        HRESULT GetFrameMoveRects(uint MoveRectsBufferSize, out DXGI_OUTDUPL_MOVE_RECT pMoveRectBuffer, out uint pMoveRectsBufferSizeRequired);
-        HRESULT GetFramePointerShape(uint PointerShapeBufferSize, out IntPtr pPointerShapeBuffer, out uint pPointerShapeBufferSizeRequired, out DXGI_OUTDUPL_POINTER_SHAPE_INFO pPointerShapeInfo);
-        [PreserveSig]
-        HRESULT MapDesktopSurface(out DXGI_MAPPED_RECT pLockedRect);
-        HRESULT UnMapDesktopSurface();
-        HRESULT ReleaseFrame();
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_OUTDUPL_DESC
-    {
-        public DXGI_MODE_DESC ModeDesc;
-        public DXGI_MODE_ROTATION Rotation;
-        public bool DesktopImageInSystemMemory;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_OUTDUPL_FRAME_INFO
-    {
-        LARGE_INTEGER LastPresentTime;
-        LARGE_INTEGER LastMouseUpdateTime;
-        public uint AccumulatedFrames;
-        public bool RectsCoalesced;
-        public bool ProtectedContentMaskedOut;
-        public DXGI_OUTDUPL_POINTER_POSITION PointerPosition;
-        public uint TotalMetadataBufferSize;
-        public uint PointerShapeBufferSize;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_OUTDUPL_POINTER_POSITION
-    {
-        public POINT Position;
-        public bool Visible;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_OUTDUPL_MOVE_RECT
-    {
-        public POINT SourcePoint;
-        public RECT DestinationRect;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct DXGI_OUTDUPL_POINTER_SHAPE_INFO
-    {
-        public uint Type;
-        public uint Width;
-        public uint Height;
-        public uint Pitch;
-        POINT HotSpot;
-    }
-  
     public enum DXGI_MODE_ROTATION
     {
         DXGI_MODE_ROTATION_UNSPECIFIED = 0,
@@ -1117,54 +979,10 @@ namespace DXGI
         public DXGI_FORMAT Format;
         public DXGI_SAMPLE_DESC SampleDesc;
         public D3D11_USAGE Usage;
-        public D3D11_BIND_FLAG BindFlags;
-        public D3D11_CPU_ACCESS_FLAG CPUAccessFlags;
-        public D3D11_RESOURCE_MISC_FLAG MiscFlags;
+        public uint BindFlags;
+        public uint CPUAccessFlags;
+        public uint MiscFlags;
     }
-
-    public enum D3D11_CPU_ACCESS_FLAG
-    {
-        D3D11_CPU_ACCESS_WRITE = 0x10000,
-        D3D11_CPU_ACCESS_READ = 0x20000
-    };
-
-    public enum D3D11_BIND_FLAG
-    {
-        D3D11_BIND_VERTEX_BUFFER = 0x1,
-        D3D11_BIND_INDEX_BUFFER = 0x2,
-        D3D11_BIND_CONSTANT_BUFFER = 0x4,
-        D3D11_BIND_SHADER_RESOURCE = 0x8,
-        D3D11_BIND_STREAM_OUTPUT = 0x10,
-        D3D11_BIND_RENDER_TARGET = 0x20,
-        D3D11_BIND_DEPTH_STENCIL = 0x40,
-        D3D11_BIND_UNORDERED_ACCESS = 0x80,
-        D3D11_BIND_DECODER = 0x200,
-        D3D11_BIND_VIDEO_ENCODER = 0x400
-    };
-
-    public enum D3D11_RESOURCE_MISC_FLAG
-    {
-        D3D11_RESOURCE_MISC_GENERATE_MIPS = 0x1,
-        D3D11_RESOURCE_MISC_SHARED = 0x2,
-        D3D11_RESOURCE_MISC_TEXTURECUBE = 0x4,
-        D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS = 0x10,
-        D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS = 0x20,
-        D3D11_RESOURCE_MISC_BUFFER_STRUCTURED = 0x40,
-        D3D11_RESOURCE_MISC_RESOURCE_CLAMP = 0x80,
-        D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX = 0x100,
-        D3D11_RESOURCE_MISC_GDI_COMPATIBLE = 0x200,
-        D3D11_RESOURCE_MISC_SHARED_NTHANDLE = 0x800,
-        D3D11_RESOURCE_MISC_RESTRICTED_CONTENT = 0x1000,
-        D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE = 0x2000,
-        D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE_DRIVER = 0x4000,
-        D3D11_RESOURCE_MISC_GUARDED = 0x8000,
-        D3D11_RESOURCE_MISC_TILE_POOL = 0x20000,
-        D3D11_RESOURCE_MISC_TILED = 0x40000,
-        D3D11_RESOURCE_MISC_HW_PROTECTED = 0x80000,
-        D3D11_RESOURCE_MISC_SHARED_DISPLAYABLE,
-        D3D11_RESOURCE_MISC_SHARED_EXCLUSIVE_WRITER
-    }
-
     public enum D3D11_USAGE
     {
         D3D11_USAGE_DEFAULT = 0,
@@ -1172,8 +990,6 @@ namespace DXGI
         D3D11_USAGE_DYNAMIC = 2,
         D3D11_USAGE_STAGING = 3
     }
-
-    //
 
     [ComImport]
     [Guid("e7174cfa-1c9e-48b1-8866-626226bfc258")]
@@ -1185,63 +1001,7 @@ namespace DXGI
         HRESULT GetUnknown(ref Guid guid, ref Guid riid, out IntPtr ppvObject);
         HRESULT SetUnknown(ref Guid guid, IntPtr pUnkData);
     }
-
-    [ComImport]
-    [Guid("9d8e1289-d7b3-465f-8126-250e349af85d")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIKeyedMutex : IDXGIDeviceSubObject
-    {
-        #region <IDXGIDeviceSubObject>
-        #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
-        #endregion
-
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
-        #endregion
-
-        HRESULT AcquireSync(UInt64 Key, uint dwMilliseconds);
-        HRESULT ReleaseSync(UInt64 Key);
-    }
-
-    [ComImport]
-    [Guid("30961379-4609-4a41-998e-54fe567ee0c1")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIResource1 : IDXGIResource
-    {
-        #region <IDXGIResource>
-        #region <IDXGIDeviceSubObject>
-        #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
-        #endregion
-
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
-        #endregion
-
-        [PreserveSig]
-        new HRESULT GetSharedHandle(out IntPtr pSharedHandle);
-        new HRESULT GetUsage(out uint pUsage);
-        new HRESULT SetEvictionPriority(uint EvictionPriority);
-        new HRESULT GetEvictionPriority(out uint pEvictionPriority);
-        #endregion
-
-        HRESULT CreateSubresourceSurface(uint index, out IDXGISurface2 ppSurface);
-        [PreserveSig]
-        //HRESULT CreateSharedHandle(SECURITY_ATTRIBUTES pAttributes, uint dwAccess, string lpName, out IntPtr pHandle);
-        HRESULT CreateSharedHandle(IntPtr pAttributes, uint dwAccess, string lpName, out IntPtr pHandle);
-    }
-
-
-
-
-
-
-
+ 
 
     public class DXGITools
     {
@@ -1320,11 +1080,6 @@ namespace DXGI
         public const int DXGI_USAGE_READ_ONLY = 0x00000100;
         public const int DXGI_USAGE_DISCARD_ON_PRESENT = 0x00000200;
         public const int DXGI_USAGE_UNORDERED_ACCESS = 0x00000400;
-
-        public const int DXGI_ENUM_MODES_STEREO = (4);
-        public const int DXGI_ENUM_MODES_DISABLED_STEREO = (8);
-        public const uint DXGI_SHARED_RESOURCE_READ = unchecked(((uint)0x80000000));
-        public const uint DXGI_SHARED_RESOURCE_WRITE = (1);
 
         //
         // DXGI status (success) codes

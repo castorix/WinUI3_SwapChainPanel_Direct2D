@@ -23,6 +23,7 @@ using static GlobalStructures.GlobalTools;
 using DXGI;
 using static DXGI.DXGITools;
 using Direct2D;
+using static Direct2D.D2DTools;
 using WIC;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -56,7 +57,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
         ID2D1Factory1 m_pD2DFactory1 = null;
         IWICImagingFactory m_pWICImagingFactory = null;
 
-        IntPtr m_pD3D11DevicePtr = IntPtr.Zero; // Released in CreateDeviceContext : not used
+        IntPtr m_pD3D11DevicePtr = IntPtr.Zero; //Used in CreateSwapChain
         ID3D11DeviceContext m_pD3D11DeviceContext = null; // Released in Clean : not used
         IDXGIDevice1 m_pDXGIDevice = null; // Released in Clean
 
@@ -145,9 +146,14 @@ namespace WinUI3_SwapChainPanel_Direct2D
         public double GetSpeed(float? x) => _SpriteSpeed;
         public float? SetSpeed(double x) => SpriteSpeed = (float)x;
 
+        // To avoid "Only a single ContentDialog can be open at any time.'
+        bool bDialog = false;
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            Click();
+            if (!bDialog)
+            {
+                Click();
+            }
         }
 
         private async void Click()
@@ -174,8 +180,15 @@ namespace WinUI3_SwapChainPanel_Direct2D
                 CloseButtonText = "Ok"
             };
             cd.XamlRoot = this.Content.XamlRoot;
-            var res = await cd.ShowAsync();
+            cd.Closed += Cd_Closed;
+            bDialog = true;
+            var res = await cd.ShowAsync();          
             //bRender = true;
+        }
+
+        private void Cd_Closed(ContentDialog sender, ContentDialogClosedEventArgs args)
+        {
+            bDialog = false;
         }
 
         private void buttonButterfly_Click(object sender, RoutedEventArgs e)
@@ -284,7 +297,9 @@ namespace WinUI3_SwapChainPanel_Direct2D
             D2D1_FACTORY_OPTIONS options = new D2D1_FACTORY_OPTIONS();
 
             // Needs "Enable native code Debugging"
+#if DEBUG
             options.debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_INFORMATION;
+#endif
 
             hr = D2DTools.D2D1CreateFactory(D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, ref D2DTools.CLSID_D2D1Factory, ref options, out m_pD2DFactory);
             m_pD2DFactory1 = (ID2D1Factory1)m_pD2DFactory;
@@ -393,7 +408,9 @@ namespace WinUI3_SwapChainPanel_Direct2D
             uint creationFlags = (uint)D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
             // Needs "Enable native code Debugging"
+#if DEBUG
             creationFlags |= (uint)D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
             int[] aD3D_FEATURE_LEVEL = new int[] { (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_11_1, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_11_0,
                 (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_10_1, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_10_0, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_9_3,
@@ -427,9 +444,8 @@ namespace WinUI3_SwapChainPanel_Direct2D
                         hr = m_pD2DDevice.CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS.D2D1_DEVICE_CONTEXT_OPTIONS_NONE, out m_pD2DDeviceContext);
                         SafeRelease(ref m_pD2DDevice);
                     }
-                }
-                //Marshal.ReleaseComObject(m_pDXGIDevice);
-                Marshal.Release(m_pD3D11DevicePtr);
+                }                
+                // Marshal.Release(m_pD3D11DevicePtr);
             }
             return hr;
         }
@@ -512,7 +528,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
             if (m_pD2DDeviceContext != null)
             {
                 if (m_pMainBrush == null)
-                    hr = m_pD2DDeviceContext.CreateSolidColorBrush(new ColorF(ColorF.Enum.Red), null, out m_pMainBrush);
+                    hr = m_pD2DDeviceContext.CreateSolidColorBrush(new ColorF(ColorF.Enum.Red), BrushProperties(), out m_pMainBrush);
                 if (m_pD2DBitmapBackground == null)
                     hr = CreateD2DBitmapFromURL("https://i.ibb.co/2MtgC8C/clouds-country-daylight-371633.jpg", out m_pD2DBitmapBackground);
                 if (m_pD2DBitmap == null)
@@ -640,9 +656,11 @@ namespace WinUI3_SwapChainPanel_Direct2D
 
             SafeRelease(ref m_pD2DTargetBitmap);
             SafeRelease(ref m_pDXGISwapChain1);
-
-            SafeRelease(ref m_pDXGIDevice);
+           
             SafeRelease(ref m_pD3D11DeviceContext);
+            if (m_pD3D11DevicePtr != IntPtr.Zero)
+                Marshal.Release(m_pD3D11DevicePtr);
+            SafeRelease(ref m_pDXGIDevice);
 
             SafeRelease(ref m_pWICImagingFactory);
             SafeRelease(ref m_pD2DFactory1);
