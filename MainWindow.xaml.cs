@@ -200,7 +200,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
         {
             if (pBitmap != null)
             {
-                D2D1_SIZE_F size = m_pD2DDeviceContext.GetSize();
+                m_pD2DDeviceContext.GetSize(out D2D1_SIZE_F size);
                 float nClientWidth = (float)size.width;
                 float nClientHeight = (float)size.height;
 
@@ -214,7 +214,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                 CSprite s = new CSprite(m_pD2DDeviceContext3, pBitmap, (uint)nXSprite, (uint)nYSprite, (uint)nCountSprite, rand.NextSingle() * 5, rand.NextSingle() * 5, new ColorF(randomColor), scale);
                 CSprites.Add(s);
 
-                D2D1_SIZE_F bmpSize = pBitmap.GetSize();
+                pBitmap.GetSize(out D2D1_SIZE_F bmpSize);
                 float nWidth = bmpSize.width / nXSprite;
                 float nHeight = bmpSize.width / nYSprite;
                 if (scale._11 != 0)
@@ -312,11 +312,11 @@ namespace WinUI3_SwapChainPanel_Direct2D
             if (m_pD2DDeviceContext != null)
             {
                 m_pD2DDeviceContext.BeginDraw();
-                D2D1_SIZE_F size = m_pD2DDeviceContext.GetSize();
+                m_pD2DDeviceContext.GetSize(out D2D1_SIZE_F size);
 
                 if (m_pD2DBitmapBackground != null)
                 {
-                    D2D1_SIZE_F sizeBmpBackground = m_pD2DBitmapBackground.GetSize();
+                    m_pD2DBitmapBackground.GetSize(out D2D1_SIZE_F sizeBmpBackground);
                     D2D1_RECT_F destRectBackground = new D2D1_RECT_F(0.0f, 0.0f, size.width, size.height);
                     D2D1_RECT_F sourceRectBackground = new D2D1_RECT_F(0.0f, 0.0f, sizeBmpBackground.width, sizeBmpBackground.height);
                     m_pD2DDeviceContext.DrawBitmap(m_pD2DBitmapBackground, ref destRectBackground, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, ref sourceRectBackground);
@@ -327,7 +327,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                 }
                 if (m_pD2DDeviceContext3 != null)
                 {
-                    var nOldAntialiasMode = m_pD2DDeviceContext3.GetAntialiasMode();
+                    m_pD2DDeviceContext3.GetAntialiasMode(out D2D1_ANTIALIAS_MODE nOldAntialiasMode);
                     m_pD2DDeviceContext3.SetAntialiasMode(D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_ALIASED);
 
                     foreach (CSprite s in CSprites)
@@ -585,7 +585,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return HRESULT.E_FAIL;
             }

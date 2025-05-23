@@ -18,6 +18,7 @@ namespace GlobalStructures
         E_FAIL = unchecked((int)0x80004005),
         E_UNEXPECTED = unchecked((int)0x8000FFFF),
         E_OUTOFMEMORY = unchecked((int)0x8007000E),
+        E_INVALIDARG = unchecked((int)0x80070057),
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -199,18 +200,20 @@ namespace GlobalStructures
         public static readonly PROPERTYKEY PKEY_FileVersion = new PROPERTYKEY(new Guid("0CEF7D53-FA64-11D1-A203-0000F81FEDEE"), 4);
     }  
 
-    public class GlobalTools
+    internal class GlobalTools
     {
-        public static void SafeRelease<T>(ref T comObject) where T : class
+#nullable enable
+        public static void SafeRelease<T>(ref T? comObject) where T : class
         {
-            T t = comObject;
-            comObject = default(T);
-            if (null != t)
+            T? t = comObject;
+            comObject = default;
+            if (t != null)
             {
                 if (Marshal.IsComObject(t))
                     Marshal.ReleaseComObject(t);
             }
         }
+#nullable disable
 
         public const long DELETE = (0x00010000L);
         public const long READ_CONTROL = (0x00020000L);
@@ -230,6 +233,9 @@ namespace GlobalStructures
             STGC_ONLYIFCURRENT = 2,
             STGC_DANGEROUSLYCOMMITMERELYTODISKCACHE = 4,
             STGC_CONSOLIDATE = 8
-        }      
+        }
+
+        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern uint GetDpiForWindow(IntPtr hwnd);
     }
 }

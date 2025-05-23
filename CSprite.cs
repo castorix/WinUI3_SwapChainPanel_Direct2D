@@ -76,7 +76,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
             m_nNbImagesY = nNbImagesY;
             m_nNbImages = (nNbImages == 0) ? m_nNbImagesX * m_nNbImagesY : nNbImages;
             hr = pDC.CreateSpriteBatch(out m_pSpriteBatch);
-            D2D1_SIZE_F bmpSize = pBitmap.GetSize();
+            pBitmap.GetSize(out D2D1_SIZE_F bmpSize);
 
             // Only first pRectDest used in the test...
             m_pRectSource = new D2D1_RECT_U[m_nNbImagesX * m_nNbImagesY];
@@ -133,8 +133,8 @@ namespace WinUI3_SwapChainPanel_Direct2D
         public void Move(ID2D1DeviceContext3 pDC, int nHorizontalFlip, bool bBounce)
         {
             HRESULT hr = HRESULT.S_OK;
-            D2D1_SIZE_F size = pDC.GetSize();
-            D2D1_SIZE_F bmpSize = m_pBitmap.GetSize();
+            pDC.GetSize( out D2D1_SIZE_F size);
+            m_pBitmap.GetSize(out D2D1_SIZE_F bmpSize);
 
             float nWidth = bmpSize.width / m_nNbImagesX;
             float nHeight = bmpSize.height / m_nNbImagesY;
