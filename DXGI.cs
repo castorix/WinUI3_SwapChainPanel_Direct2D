@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices;
 using GlobalStructures;
-using System.Reflection.Metadata;
-using System.Security.Permissions;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DXGI
-{  
+{
+    using DXGI_INFO_QUEUE_MESSAGE_ID = System.Int32;
+
     [ComImport]
     [Guid("aec22fb8-76f3-4639-9be0-28eb43a67a2e")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -823,8 +824,11 @@ namespace DXGI
 
         [PreserveSig]
         HRESULT SetSourceSize(uint Width, uint Height);
+        [PreserveSig]
         HRESULT GetSourceSize(out uint pWidth, out uint pHeight);
+        [PreserveSig]
         HRESULT SetMaximumFrameLatency(uint MaxLatency);
+        [PreserveSig]
         HRESULT GetMaximumFrameLatency(out uint pMaxLatency);
         [PreserveSig]
         IntPtr GetFrameLatencyWaitableObject();
@@ -1148,7 +1152,6 @@ namespace DXGI
         DXGI_OVERLAY_SUPPORT_FLAG_SCALING = 0x2
     }
 
-
     [ComImport]
     [Guid("25483823-cd46-4c7d-86ca-47aa95b837bd")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1195,11 +1198,16 @@ namespace DXGI
 
         [PreserveSig]
         uint GetCreationFlags();
-    }
-
+    }    
+    
     public class DXGITools
     {
         public static Guid IID_ID3D11Texture2D = new Guid("6f15aaf2-d208-4e89-9ab4-489535d34f9c");
+
+        public static Guid DXGI_DEBUG_ALL = new Guid(0xe48ae283, 0xda80, 0x490b, 0x87, 0xe6, 0x43, 0xe9, 0xa9, 0xcf, 0xda, 0x8);
+        public static Guid DXGI_DEBUG_DX = new Guid(0x35cdd7fc, 0x13b2, 0x421d, 0xa5, 0xd7, 0x7e, 0x44, 0x51, 0x28, 0x7d, 0x64);
+        public static Guid DXGI_DEBUG_DXGI = new Guid(0x25cddaa4, 0xb1c6, 0x47e1, 0xac, 0x3e, 0x98, 0x87, 0x5b, 0x5a, 0x2e, 0x2a);
+        public static Guid DXGI_DEBUG_APP = new Guid(0x6cd6e01, 0x4219, 0x4ebd, 0x87, 0x9, 0x27, 0xed, 0x23, 0x36, 0xc, 0x62);
 
         [DllImport("DXGI.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern HRESULT CreateDXGIFactory([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IntPtr ppFactory);
@@ -1738,5 +1746,196 @@ namespace DXGI
         //
         public const HRESULT DXGI_DDI_ERR_NONEXCLUSIVE = (HRESULT)unchecked((int)0x887B0003);
 
+        [DllImport("D3D11.dll", EntryPoint = "CreateDirect3D11SurfaceFromDXGISurface", SetLastError = true,
+            CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+        //public static extern HRESULT CreateDirect3D11SurfaceFromDXGISurface(IntPtr dxgiSurface, out IntPtr graphicsSurface);
+        public static extern HRESULT CreateDirect3D11SurfaceFromDXGISurface(IDXGISurface dxgiSurface, out IntPtr graphicsSurface);       
+
+        public const int DXGI_INFO_QUEUE_MESSAGE_ID_STRING_FROM_APPLICATION = 0;
+        public const uint DXGI_INFO_QUEUE_DEFAULT_MESSAGE_COUNT_LIMIT = 1024;
+
+        [DllImport("DXGI.dll", EntryPoint = "DXGIGetDebugInterface1", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern HRESULT DXGIGetDebugInterface1(int flags, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,  [MarshalAs(UnmanagedType.IUnknown)] out object debug);
+    }
+
+    // Debug
+
+    public enum DXGI_DEBUG_RLO_FLAGS
+    {
+        DXGI_DEBUG_RLO_SUMMARY = 0x1,
+        DXGI_DEBUG_RLO_DETAIL = 0x2,
+        DXGI_DEBUG_RLO_IGNORE_INTERNAL = 0x4,
+        DXGI_DEBUG_RLO_ALL = 0x7
+    }
+
+    public enum DXGI_INFO_QUEUE_MESSAGE_CATEGORY
+    {
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_UNKNOWN = 0,
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_MISCELLANEOUS = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_UNKNOWN + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_INITIALIZATION = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_MISCELLANEOUS + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_CLEANUP = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_INITIALIZATION + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_COMPILATION = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_CLEANUP + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_COMPILATION + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_SETTING = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_GETTING = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_SETTING + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_RESOURCE_MANIPULATION = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_GETTING + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_EXECUTION = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_RESOURCE_MANIPULATION + 1),
+        DXGI_INFO_QUEUE_MESSAGE_CATEGORY_SHADER = (DXGI_INFO_QUEUE_MESSAGE_CATEGORY_EXECUTION + 1)
+    }
+
+    public enum DXGI_INFO_QUEUE_MESSAGE_SEVERITY
+    {
+        DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION = 0,
+        DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR = (DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION + 1),
+        DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING = (DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR + 1),
+        DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO = (DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING + 1),
+        DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE = (DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO + 1)
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DXGI_DEBUG_ID
+    {
+        public Guid Guid;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DXGI_INFO_QUEUE_MESSAGE
+    {
+        public DXGI_DEBUG_ID Producer;
+        public DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category;
+        public DXGI_INFO_QUEUE_MESSAGE_SEVERITY Severity;
+        public DXGI_INFO_QUEUE_MESSAGE_ID ID;
+
+        // Pointer to null-terminated ANSI string
+        public IntPtr pDescription;
+
+        public nuint DescriptionByteLength;
+
+        public string Description
+        {
+            get
+            {
+                if (pDescription == IntPtr.Zero)
+                    return string.Empty;
+                return Marshal.PtrToStringAnsi(pDescription, (int)DescriptionByteLength) ?? string.Empty;
+            }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DXGI_INFO_QUEUE_FILTER_DESC
+    {
+        public uint NumCategories;
+        public IntPtr pCategoryList;  // DXGI_INFO_QUEUE_MESSAGE_CATEGORY*
+        public uint NumSeverities;
+        public IntPtr pSeverityList;  // DXGI_INFO_QUEUE_MESSAGE_SEVERITY*
+        public uint NumIDs;
+        public IntPtr pIDList;        // DXGI_INFO_QUEUE_MESSAGE_ID*
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DXGI_INFO_QUEUE_FILTER
+    {
+        public DXGI_INFO_QUEUE_FILTER_DESC AllowList;
+        public DXGI_INFO_QUEUE_FILTER_DESC DenyList;
+    }
+
+    [ComImport]
+    [Guid("D67441C7-672A-476f-9E82-CD55B44949CE")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IDXGIInfoQueue
+    {
+        [PreserveSig]
+        HRESULT SetMessageCountLimit(DXGI_DEBUG_ID Producer, UInt64 MessageCountLimit);
+        void ClearStoredMessages(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT GetMessage(DXGI_DEBUG_ID Producer, UInt64 MessageIndex, out DXGI_INFO_QUEUE_MESSAGE pMessage, ref UIntPtr pMessageByteLength);
+        [PreserveSig]
+        UInt64 GetNumStoredMessagesAllowedByRetrievalFilters(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        UInt64 GetNumStoredMessages(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        UInt64 GetNumMessagesDiscardedByMessageCountLimit(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        UInt64 GetMessageCountLimit(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        UInt64 GetNumMessagesAllowedByStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        UInt64 GetNumMessagesDeniedByStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT AddStorageFilterEntries(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_FILTER pFilter);
+        [PreserveSig]
+        HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, out DXGI_INFO_QUEUE_FILTER pFilter, ref UIntPtr pFilterByteLength);
+        void ClearStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushEmptyStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushDenyAllStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushCopyOfStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushStorageFilter(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_FILTER pFilter);
+        void PopStorageFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        uint GetStorageFilterStackSize(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT AddRetrievalFilterEntries(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_FILTER pFilter);
+        [PreserveSig]
+        HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, out DXGI_INFO_QUEUE_FILTER pFilter, ref UIntPtr pFilterByteLength);
+        void ClearRetrievalFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushEmptyRetrievalFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushDenyAllRetrievalFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushCopyOfRetrievalFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT PushRetrievalFilter(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_FILTER pFilter);
+        void PopRetrievalFilter(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        uint GetRetrievalFilterStackSize(DXGI_DEBUG_ID Producer);
+        [PreserveSig]
+        HRESULT AddMessage(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category, DXGI_INFO_QUEUE_MESSAGE_SEVERITY Severity,
+              DXGI_INFO_QUEUE_MESSAGE_ID ID, string pDescription);
+        [PreserveSig]
+        HRESULT AddApplicationMessage(DXGI_INFO_QUEUE_MESSAGE_SEVERITY Severity, string pDescription);
+        [PreserveSig]
+        HRESULT SetBreakOnCategory(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category, bool bEnable);
+        [PreserveSig]
+        HRESULT SetBreakOnSeverity(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_SEVERITY Severity, bool bEnable);
+        [PreserveSig]
+        HRESULT SetBreakOnID(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_ID ID, bool bEnable);
+        [PreserveSig]
+        bool GetBreakOnCategory(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category);
+        [PreserveSig]
+        bool GetBreakOnSeverity(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_SEVERITY Severity);
+        [PreserveSig]
+        bool GetBreakOnID(DXGI_DEBUG_ID Producer, DXGI_INFO_QUEUE_MESSAGE_ID ID);       
+        void SetMuteDebugOutput(DXGI_DEBUG_ID Producer, bool bMute);
+        [PreserveSig]
+        bool GetMuteDebugOutput(DXGI_DEBUG_ID Producer);
+    }
+
+    [ComImport]
+    [Guid("119E7452-DE9E-40fe-8806-88F90C12B441")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IDXGIDebug
+    {
+        [PreserveSig]
+        HRESULT ReportLiveObjects([MarshalAs(UnmanagedType.LPStruct)] Guid apiid, DXGI_DEBUG_RLO_FLAGS flags);
+    }
+
+    [ComImport]
+    [Guid("c5a05f0c-16f2-4adf-9f4d-a8c4d58ac550")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IDXGIDebug1 : IDXGIDebug
+    {
+        [PreserveSig]
+        new HRESULT ReportLiveObjects([MarshalAs(UnmanagedType.LPStruct)] Guid apiid, DXGI_DEBUG_RLO_FLAGS flags);
+
+        void EnableLeakTrackingForThread();        
+        void DisableLeakTrackingForThread();
+        [PreserveSig]
+        bool IsLeakTrackingEnabledForThread();
     }
 }

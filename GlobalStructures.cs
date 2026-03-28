@@ -237,5 +237,24 @@ namespace GlobalStructures
 
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern uint GetDpiForWindow(IntPtr hwnd);
+        
+        public static int RGB(byte r, byte g, byte b)
+        {
+            return (r) | ((g) << 8) | ((b) << 16);
+        }
+        
+        public static int HIWORD(IntPtr wParam)
+        {
+            return (int)((wParam.ToInt64() >> 16) & 0xffff);
+        }
+
+        public static int LOWORD(IntPtr wParam)
+        {
+            return (int)(wParam.ToInt64() & 0xffff);
+        }
+
+        public static bool SUCCEEDED(HRESULT hr) => hr >= 0;
+
+        public static bool FAILED(HRESULT hr) => (hr < 0);
     }
 }

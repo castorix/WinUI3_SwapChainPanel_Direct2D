@@ -3,13 +3,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Direct2D;
 using GlobalStructures;
-using Microsoft.UI.Xaml.Controls;
 
 namespace WIC
 {
     internal class WICTools
     {
         public static Guid CLSID_WICImagingFactory = new Guid("{cacaf262-9370-4615-a13b-9f5539da4c0a}");
+        public static Guid GUID_VendorMicrosoft = new Guid("f0e749ca-edef-4589-a73a-ee0e626a2a2b");
+        public static Guid GUID_VendorMicrosoftBuiltIn = new Guid("257a30fd-06b6-462b-aea4-63f70b86e533");
         public static Guid GUID_WICPixelFormat32bppBGR = new Guid("6fddc324-4e03-4bfe-b185-3d77768dc90e");
         public static Guid GUID_WICPixelFormat32bppBGRA = new Guid("6fddc324-4e03-4bfe-b185-3d77768dc90f");
         public static Guid GUID_WICPixelFormat32bppPBGRA = new Guid("6fddc324-4e03-4bfe-b185-3d77768dc910");
@@ -18,6 +19,9 @@ namespace WIC
         public static Guid GUID_ContainerFormatPng = new Guid("1b7cfaf4-713f-473c-bbcd-6137425faeaf");
         public static Guid GUID_ContainerFormatGif = new Guid("1f8a5601-7d4d-4cbd-9c82-1bc8d4eeb9a5");
         public static Guid GUID_ContainerFormatTiff = new Guid("163bcc30-e2e9-4f0b-961d-a3e9fdb788a3");
+        public static Guid GUID_WICPixelFormat32bppRGBA= new Guid("f5c7ad2d-6a8d-43dd-a7a8-a29935261ae9");
+        public static Guid GUID_WICPixelFormat32bppPRGBA = new Guid("3cc4a650-a527-4d37-a916-3142c7ebedba");
+
     } 
 
     [StructLayout(LayoutKind.Sequential)]
@@ -258,8 +262,7 @@ namespace WIC
         HRESULT GetPixelFormat(out Guid pPixelFormat);
         HRESULT GetResolution(out double pDpiX, out double pDpiY);
         HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -375,8 +378,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
         HRESULT Initialize(IWICBitmapSource pISource, ref Guid dstFormat, WICBitmapDitherType dither, IWICPalette pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
         HRESULT CanConvert(ref Guid srcPixelFormat, ref Guid dstPixelFormat, out bool pfCanConvert);
@@ -426,7 +428,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
         HRESULT Initialize(IWICBitmapSource pISource, uint uiWidth, uint uiHeight, WICBitmapInterpolationMode mode);
     }
@@ -441,8 +443,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
 
         HRESULT Initialize(IWICBitmapSource pISource, WICRect prc);
@@ -469,8 +470,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
 
         HRESULT Initialize(IWICBitmapSource pISource, WICBitmapTransformOptions options);
@@ -486,8 +486,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
 
         HRESULT Initialize(IWICBitmapSource pIBitmapSource, IWICColorContext pIContextSource, IWICColorContext pIContextDest, ref Guid pixelFmtDest);
@@ -548,8 +547,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
 
         HRESULT Lock(ref WICRect prcLock, WICBitmapLockFlags flags, out IWICBitmapLock ppILock);
@@ -586,8 +584,7 @@ namespace WIC
         new HRESULT GetPixelFormat(out Guid pPixelFormat);
         new HRESULT GetResolution(out double pDpiX, out double pDpiY);
         new HRESULT CopyPalette(IWICPalette pIPalette);
-        //HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
-        new HRESULT CopyPixels(ref WICRect prc, uint cbStride, uint cbBufferSize, IntPtr pbBuffer);
+        new HRESULT CopyPixels(IntPtr /*WICRect*/ prc, uint cbStride, uint cbBufferSize, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)] byte[] pbBuffer);
         #endregion
 
         HRESULT GetMetadataQueryReader(out IWICMetadataQueryReader ppIMetadataQueryReader);

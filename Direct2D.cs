@@ -905,7 +905,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -1716,7 +1716,7 @@ namespace Direct2D
         public D2D1_MATRIX_3X2_F maskTransform;
         public float opacity;
         //_Field_size_opt_(1) ID2D1Brush* opacityBrush;
-        public IntPtr opacityBrush;
+        public ID2D1Brush opacityBrush;
         public D2D1_LAYER_OPTIONS layerOptions;
     }
 
@@ -1872,7 +1872,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -2024,7 +2024,7 @@ namespace Direct2D
         [PreserveSig]
         void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         void PopAxisAlignedClip();
         [PreserveSig]
@@ -2168,9 +2168,9 @@ namespace Direct2D
         [PreserveSig]
         HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount,PD2D1_EFFECT_FACTORY effectFactory);
+        HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount,/*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -2376,7 +2376,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -2659,7 +2659,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig] 
@@ -2738,7 +2738,8 @@ namespace Direct2D
         [PreserveSig]
         void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -2854,7 +2855,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -2934,7 +2935,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -3071,7 +3073,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -3151,7 +3153,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -3305,7 +3308,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -3385,7 +3388,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -3594,7 +3598,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -3676,7 +3680,8 @@ namespace Direct2D
         //new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin,  DWRITE_GLYPH_RUN glyphRun, /* optional(DWRITE_GLYPH_RUN_DESCRIPTION) */ IntPtr glyphRunDescription, /* _In_ */ ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, /* _In_ */ ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -3999,7 +4004,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -4079,7 +4084,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -4304,7 +4310,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -4384,7 +4390,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -4614,7 +4621,7 @@ namespace Direct2D
         [PreserveSig]
         new void RestoreDrawingState(ID2D1DrawingStateBlock drawingStateBlock);
         [PreserveSig]
-        new void PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        new void PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         new void PopAxisAlignedClip();
         [PreserveSig]
@@ -4694,7 +4701,8 @@ namespace Direct2D
         [PreserveSig]
         new void DrawGlyphRun(D2D1_POINT_2F baselineOrigin, ref DWRITE_GLYPH_RUN glyphRun, IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
         [PreserveSig]
-        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new void DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, ref D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -4980,7 +4988,13 @@ namespace Direct2D
         [PreserveSig]
         HRESULT SetAttributeValue(string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, string value);
         [PreserveSig]
-        HRESULT GetAttributeValue(string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, out string value, uint valueCount);
+        //HRESULT GetAttributeValue(string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, out string value, uint valueCount);
+        //HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, [MarshalAs(UnmanagedType.LPWStr)] string value, uint valueCount);
+        //HRESULT GetAttributeValue(string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, StringBuilder value, out uint valueCount);
+        HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, IntPtr value,  uint valueCount);
+
+
+
         [PreserveSig]
         HRESULT GetAttributeValueLength(string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, out uint valueLength);
         [PreserveSig]
@@ -5856,7 +5870,8 @@ namespace Direct2D
         [PreserveSig]
         HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
         [PreserveSig]
@@ -5868,7 +5883,7 @@ namespace Direct2D
         [PreserveSig]
         HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
         [PreserveSig]
-        HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
         [PreserveSig]
         HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
         [PreserveSig]
@@ -8720,7 +8735,7 @@ namespace Direct2D
         [DllImport("D2D1.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern float D2D1Vec3Length(float x, float y, float z);
 
-        public delegate HRESULT PD2D1_EFFECT_FACTORY(out IntPtr effectImpl);
+        //public delegate HRESULT PD2D1_EFFECT_FACTORY(out IntPtr effectImpl);
 
         public const long D2DERR_RECREATE_TARGET = (0x8899000CL);
 
@@ -8819,6 +8834,11 @@ namespace Direct2D
         public static extern HRESULT D3D11CreateDevice(IDXGIAdapter pAdapter, D3D_DRIVER_TYPE DriverType, IntPtr Software, uint Flags, [MarshalAs(UnmanagedType.LPArray)] int[] pFeatureLevels,
              //uint FeatureLevels, uint SDKVersion, out ID3D11Device ppDevice, out D3D_FEATURE_LEVEL pFeatureLevel, out ID3D11DeviceContext ppImmediateContext);
              uint FeatureLevels, uint SDKVersion, out IntPtr ppDevice, out D3D_FEATURE_LEVEL pFeatureLevel, out ID3D11DeviceContext ppImmediateContext);
+
+        [DllImport("D3D11.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern HRESULT D3D11CreateDevice(IDXGIAdapter pAdapter, D3D_DRIVER_TYPE DriverType, IntPtr Software, uint Flags, [MarshalAs(UnmanagedType.LPArray)] int[] pFeatureLevels,
+            uint FeatureLevels, uint SDKVersion, out IntPtr ppDevice, out D3D_FEATURE_LEVEL pFeatureLevel, out IntPtr ppImmediateContext);
+
 
         [DllImport("D3D11.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern HRESULT D3D11CreateDeviceAndSwapChain(IDXGIAdapter pAdapter, D3D_DRIVER_TYPE DriverType, IntPtr Software, uint Flags, IntPtr pFeatureLevels, uint FeatureLevels,
@@ -8932,7 +8952,7 @@ namespace Direct2D
             D2D1_ANTIALIAS_MODE maskAntialiasMode = D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_PER_PRIMITIVE,
             D2D1_MATRIX_3X2_F maskTransform = default,
             float opacity = 1.0f,
-            IntPtr opacityBrush = default,
+            ID2D1Brush opacityBrush = default,
             D2D1_LAYER_OPTIONS layerOptions = D2D1_LAYER_OPTIONS.D2D1_LAYER_OPTIONS_NONE)
         {
             if (contentBounds.Equals(default(D2D1_RECT_F)))
@@ -8995,6 +9015,20 @@ namespace Direct2D
         {
             return new D2D1_QUADRATIC_BEZIER_SEGMENT { point1 = point1, point2 = point2 };
         }
+
+        public static D2D1_MATRIX_3X2_F ToClass(D2D1_MATRIX_3X2_F_STRUCT s)
+        {
+            return new D2D1_MATRIX_3X2_F
+            {
+                _11 = s._11,
+                _12 = s._12,
+                _21 = s._21,
+                _22 = s._22,
+                _31 = s._31,
+                _32 = s._32
+            };
+        }
+
     }
 
     public class ColorF : D2D1_COLOR_F
@@ -9469,11 +9503,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -9521,11 +9555,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -9554,13 +9588,12 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
     }
-
     [ComImport]
     [Guid("c0bfa96c-e089-44fb-8eaf-26f8796190da")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -9568,26 +9601,25 @@ namespace Direct2D
     {
         #region ID3D11DeviceChild
         [PreserveSig]
-        //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
-        void VSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void VSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
-        void PSSetShaderResources(uint StartSlot, uint NumViews, ID3D11ShaderResourceView ppShaderResourceViews);
+        void PSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void PSSetShader(ID3D11PixelShader pPixelShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void PSSetShader(ID3D11PixelShader pPixelShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
-        void PSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void PSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
-        void VSSetShader(ID3D11VertexShader pVertexShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void VSSetShader(ID3D11VertexShader pVertexShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
         void DrawIndexed(uint IndexCount, uint StartIndexLocation, int BaseVertexLocation);
         [PreserveSig]
@@ -9597,11 +9629,11 @@ namespace Direct2D
         [PreserveSig]
         void Unmap(ID3D11Resource pResource, uint Subresource);
         [PreserveSig]
-        void PSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void PSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
         void IASetInputLayout(ID3D11InputLayout pInputLayout);
         [PreserveSig]
-        void IASetVertexBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppVertexBuffers, uint pStrides, uint pOffsets);
+        void IASetVertexBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppVertexBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pStrides, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pOffsets);
         [PreserveSig]
         void IASetIndexBuffer(ID3D11Buffer pIndexBuffer, DXGI_FORMAT Format, uint Offset);
         [PreserveSig]
@@ -9609,16 +9641,16 @@ namespace Direct2D
         [PreserveSig]
         void DrawInstanced(uint VertexCountPerInstance, uint InstanceCount, uint StartVertexLocation, uint StartInstanceLocation);
         [PreserveSig]
-        void GSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void GSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
-        void GSSetShader(ID3D11GeometryShader pShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void GSSetShader(ID3D11GeometryShader pShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
         //void IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY Topology);
         void IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY Topology);
         [PreserveSig]
-        void VSSetShaderResources(uint StartSlot, uint NumViews, ID3D11ShaderResourceView ppShaderResourceViews);
+        void VSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void VSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void VSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
         void Begin(ID3D11Asynchronous pAsync);
         [PreserveSig]
@@ -9628,21 +9660,20 @@ namespace Direct2D
         [PreserveSig]
         void SetPredication(ID3D11Predicate pPredicate, bool PredicateValue);
         [PreserveSig]
-        void GSSetShaderResources(uint StartSlot, uint NumViews, ID3D11ShaderResourceView ppShaderResourceViews);
+        void GSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void GSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void GSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
-        void OMSetRenderTargets(uint NumViews, ID3D11RenderTargetView ppRenderTargetViews, ID3D11DepthStencilView pDepthStencilView);
+        void OMSetRenderTargets(uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ID3D11RenderTargetView[] ppRenderTargetViews, ID3D11DepthStencilView pDepthStencilView);
         [PreserveSig]
-        void OMSetRenderTargetsAndUnorderedAccessViews(uint NumRTVs, ID3D11RenderTargetView ppRenderTargetViews, ID3D11DepthStencilView pDepthStencilView,
-            uint UAVStartSlot, uint NumUAVs, ID3D11UnorderedAccessView ppUnorderedAccessViews, uint pUAVInitialCounts);
+        void OMSetRenderTargetsAndUnorderedAccessViews(uint NumRTVs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ID3D11RenderTargetView[] ppRenderTargetViews, ID3D11DepthStencilView pDepthStencilView,
+            uint UAVStartSlot, uint NumUAVs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ID3D11UnorderedAccessView[] ppUnorderedAccessViews, uint pUAVInitialCounts);
         [PreserveSig]
-        //   _In_opt_  const FLOAT BlendFactor[ 4 ],
-        void OMSetBlendState(ID3D11BlendState pBlendState, float[] BlendFactor, uint SampleMask);
+        void OMSetBlendState(ID3D11BlendState pBlendState, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] BlendFactor, uint SampleMask);
         [PreserveSig]
         void OMSetDepthStencilState(ID3D11DepthStencilState pDepthStencilState, uint StencilRef);
         [PreserveSig]
-        void SOSetTargets(uint NumBuffers, ID3D11Buffer ppSOTargets, uint pOffsets);
+        void SOSetTargets(uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ID3D11Buffer[] ppSOTargets, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] pOffsets);
         [PreserveSig]
         void DrawAuto();
         [PreserveSig]
@@ -9656,26 +9687,23 @@ namespace Direct2D
         [PreserveSig]
         void RSSetState(ID3D11RasterizerState pRasterizerState);
         [PreserveSig]
-        void RSSetViewports(uint NumViewports, D3D11_VIEWPORT pViewports);
+        void RSSetViewports(uint NumViewports, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D11_VIEWPORT[] pViewports);
         [PreserveSig]
-        ////void RSSetScissorRects(uint NumRects, D3D11_RECT pRects);
-        void RSSetScissorRects(uint NumRects, RECT pRects);
+        void RSSetScissorRects(uint NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] RECT[] pRects);
         [PreserveSig]
         void CopySubresourceRegion(ID3D11Resource pDstResource, uint DstSubresource, uint DstX, uint DstY, uint DstZ, ID3D11Resource pSrcResource, uint SrcSubresource, D3D11_BOX pSrcBox);
         [PreserveSig]
         void CopyResource(ID3D11Resource pDstResource, ID3D11Resource pSrcResource);
         [PreserveSig]
-        void UpdateSubresource(ID3D11Resource pDstResource, uint DstSubresource, D3D11_BOX pDstBox, IntPtr pSrcData, uint SrcRowPitch, uint SrcDepthPitch);
+        //void UpdateSubresource(ID3D11Resource pDstResource, uint DstSubresource, D3D11_BOX pDstBox, IntPtr pSrcData, uint SrcRowPitch, uint SrcDepthPitch);
+        void UpdateSubresource(ID3D11Resource pDstResource, uint DstSubresource, IntPtr pDstBox, IntPtr pSrcData, uint SrcRowPitch, uint SrcDepthPitch);
         [PreserveSig]
         void CopyStructureCount(ID3D11Buffer pDstBuffer, uint DstAlignedByteOffset, ID3D11UnorderedAccessView pSrcView);
         [PreserveSig]
-        // float ColorRGBA[ 4 ]
-        void ClearRenderTargetView(ID3D11RenderTargetView pRenderTargetView, float[] ColorRGBA);
+        void ClearRenderTargetView(ID3D11RenderTargetView pRenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] ColorRGBA);
         [PreserveSig]
-        // uint Values[ 4 ]
         void ClearUnorderedAccessViewuint(ID3D11UnorderedAccessView pUnorderedAccessView, uint[] Values);
         [PreserveSig]
-        // float Values[ 4 ]
         void ClearUnorderedAccessViewfloat(ID3D11UnorderedAccessView pUnorderedAccessView, float[] Values);
         [PreserveSig]
         void ClearDepthStencilView(ID3D11DepthStencilView pDepthStencilView, uint ClearFlags, float Depth, byte Stencil);
@@ -9690,110 +9718,108 @@ namespace Direct2D
         [PreserveSig]
         void ExecuteCommandList(ID3D11CommandList pCommandList, bool RestoreContextState);
         [PreserveSig]
-        void HSSetShaderResources(uint StartSlot, uint NumViews,ID3D11ShaderResourceView ppShaderResourceViews);
+        void HSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void HSSetShader(ID3D11HullShader pHullShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void HSSetShader(ID3D11HullShader pHullShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
-        void HSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void HSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
-        void HSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void HSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
-        void DSSetShaderResources(uint StartSlot, uint NumViews, ID3D11ShaderResourceView ppShaderResourceViews);
+        void DSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void DSSetShader(ID3D11DomainShader pDomainShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void DSSetShader(ID3D11DomainShader pDomainShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
-        void DSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void DSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
-        void DSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void DSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
-        void CSSetShaderResources(uint StartSlot, uint NumViews, ID3D11ShaderResourceView ppShaderResourceViews);
+        void CSSetShaderResources(uint StartSlot, uint NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11ShaderResourceView[] ppShaderResourceViews);
         [PreserveSig]
-        void CSSetUnorderedAccessViews(uint StartSlot, uint NumUAVs, ID3D11UnorderedAccessView ppUnorderedAccessViews, uint pUAVInitialCounts);
+        void CSSetUnorderedAccessViews(uint StartSlot, uint NumUAVs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11UnorderedAccessView[] ppUnorderedAccessViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pUAVInitialCounts);
         [PreserveSig]
-        void CSSetShader(ID3D11ComputeShader pComputeShader, ID3D11ClassInstance ppClassInstances, uint NumClassInstances);
+        void CSSetShader(ID3D11ComputeShader pComputeShader, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11ClassInstance[] ppClassInstances, uint NumClassInstances);
         [PreserveSig]
-        void CSSetSamplers(uint StartSlot, uint NumSamplers, ID3D11SamplerState ppSamplers);
+        void CSSetSamplers(uint StartSlot, uint NumSamplers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11SamplerState[] ppSamplers);
         [PreserveSig]
-        void CSSetConstantBuffers(uint StartSlot, uint NumBuffers, ID3D11Buffer ppConstantBuffers);
+        void CSSetConstantBuffers(uint StartSlot, uint NumBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ID3D11Buffer[] ppConstantBuffers);
         [PreserveSig]
-        void VSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void VSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
-        void PSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void PSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void PSGetShader(out ID3D11PixelShader ppPixelShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void PSGetShader(out ID3D11PixelShader ppPixelShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
-        void PSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void PSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
-        void VSGetShader(out ID3D11VertexShader ppVertexShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void VSGetShader(out ID3D11VertexShader ppVertexShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
-        void PSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void PSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
         void IAGetInputLayout(out ID3D11InputLayout ppInputLayout);
         [PreserveSig]
-        void IAGetVertexBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppVertexBuffers, out uint pStrides, out uint pOffsets);
+        void IAGetVertexBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppVertexBuffers, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pStrides, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] pOffsets);
         [PreserveSig]
         void IAGetIndexBuffer(out ID3D11Buffer pIndexBuffer, out DXGI_FORMAT Format, out uint Offset);
         [PreserveSig]
-        void GSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void GSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
-        void GSGetShader(out ID3D11GeometryShader ppGeometryShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void GSGetShader(out ID3D11GeometryShader ppGeometryShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
         //void IAGetPrimitiveTopology(out D3D11_PRIMITIVE_TOPOLOGY pTopology);
         void IAGetPrimitiveTopology(out D3D_PRIMITIVE_TOPOLOGY pTopology);
         [PreserveSig]
-        void VSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void VSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void VSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void VSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
         void GetPredication(out ID3D11Predicate ppPredicate, out bool pPredicateValue);
         [PreserveSig]
-        void GSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void GSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void GSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void GSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
-        void OMGetRenderTargets(uint NumViews, out ID3D11RenderTargetView ppRenderTargetViews, out ID3D11DepthStencilView ppDepthStencilView);
+        void OMGetRenderTargets(uint NumViews, /* out optional ID3D11RenderTargetView* */ IntPtr ppRenderTargetViews, out ID3D11DepthStencilView ppDepthStencilView);
         [PreserveSig]
-        void OMGetRenderTargetsAndUnorderedAccessViews(uint NumRTVs, out ID3D11RenderTargetView ppRenderTargetViews, out ID3D11DepthStencilView ppDepthStencilView, uint UAVStartSlot, uint NumUAVs, out ID3D11UnorderedAccessView ppUnorderedAccessViews);
+        void OMGetRenderTargetsAndUnorderedAccessViews(uint NumRTVs, /* out optional ID3D11RenderTargetView* */ IntPtr ppRenderTargetViews, out ID3D11DepthStencilView ppDepthStencilView, uint UAVStartSlot, uint NumUAVs, /* out optional ID3D11UnorderedAccessView* */ IntPtr ppUnorderedAccessViews);
         [PreserveSig]
-        //  float BlendFactor[ 4 ]
-        void OMGetBlendState(out ID3D11BlendState ppBlendState, out float[] BlendFactor, out uint pSampleMask);
+        void OMGetBlendState(out ID3D11BlendState ppBlendState, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] BlendFactor, /* out optional uint* */ IntPtr pSampleMask);
         [PreserveSig]
         void OMGetDepthStencilState(out ID3D11DepthStencilState ppDepthStencilState, out uint pStencilRef);
         [PreserveSig]
-        void SOGetTargets(uint NumBuffers, out ID3D11Buffer ppSOTargets);
+        void SOGetTargets(uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppSOTargets);
         [PreserveSig]
         void RSGetState(out ID3D11RasterizerState ppRasterizerState);
         [PreserveSig]
-        void RSGetViewports(ref uint pNumViewports, out D3D11_VIEWPORT pViewports);
+        void RSGetViewports(ref uint pNumViewports, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D11_VIEWPORT[] pViewports);
         [PreserveSig]
-        //void RSGetScissorRects(ref uint pNumRects, out D3D11_RECT pRects);
-        void RSGetScissorRects(ref uint pNumRects, out RECT pRects);
+        void RSGetScissorRects(ref uint pNumRects, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] RECT[] pRects);
         [PreserveSig]
-        void HSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void HSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void HSGetShader(out ID3D11HullShader ppHullShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void HSGetShader(out ID3D11HullShader ppHullShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
-        void HSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void HSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
-        void HSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void HSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
-        void DSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void DSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void DSGetShader(out ID3D11DomainShader ppDomainShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void DSGetShader(out ID3D11DomainShader ppDomainShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
-        void DSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void DSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
-        void DSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void DSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
-        void CSGetShaderResources(uint StartSlot, uint NumViews, out ID3D11ShaderResourceView ppShaderResourceViews);
+        void CSGetShaderResources(uint StartSlot, uint NumViews, /* out optional ID3D11ShaderResourceView* */ IntPtr ppShaderResourceViews);
         [PreserveSig]
-        void CSGetUnorderedAccessViews(uint StartSlot, uint NumUAVs, out ID3D11UnorderedAccessView ppUnorderedAccessViews);
+        void CSGetUnorderedAccessViews(uint StartSlot, uint NumUAVs, /* out optional ID3D11UnorderedAccessView* */ IntPtr ppUnorderedAccessViews);
         [PreserveSig]
-        void CSGetShader(out ID3D11ComputeShader ppComputeShader, out ID3D11ClassInstance ppClassInstances, ref uint pNumClassInstances);
+        void CSGetShader(out ID3D11ComputeShader ppComputeShader, /* out optional ID3D11ClassInstance* */ IntPtr ppClassInstances, /* out optional uint* */ IntPtr pNumClassInstances);
         [PreserveSig]
-        void CSGetSamplers(uint StartSlot, uint NumSamplers, out ID3D11SamplerState ppSamplers);
+        void CSGetSamplers(uint StartSlot, uint NumSamplers, /* out optional ID3D11SamplerState* */ IntPtr ppSamplers);
         [PreserveSig]
-        void CSGetConstantBuffers(uint StartSlot, uint NumBuffers, out ID3D11Buffer ppConstantBuffers);
+        void CSGetConstantBuffers(uint StartSlot, uint NumBuffers, /* out optional ID3D11Buffer* */ IntPtr ppConstantBuffers);
         [PreserveSig]
         void ClearState();
         [PreserveSig]
@@ -9811,18 +9837,17 @@ namespace Direct2D
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface ID3D11Buffer : ID3D11Resource
     {
-
         #region ID3D11Resource
         #region ID3D11DeviceChild
         [PreserveSig]
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -9858,11 +9883,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -9880,11 +9905,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -9945,28 +9970,73 @@ namespace Direct2D
     }
 
     //typedef D3D_SRV_DIMENSION D3D11_SRV_DIMENSION;
+    //[StructLayout(LayoutKind.Sequential)]
+    //public struct D3D11_SHADER_RESOURCE_VIEW_DESC
+    //{
+    //    public DXGI_FORMAT Format;
+    //    //public D3D11_SRV_DIMENSION ViewDimension;
+    //    public D3D_SRV_DIMENSION ViewDimension;
+
+    //    //    union 
+    //    //    {
+    //    //    D3D11_BUFFER_SRV Buffer;
+    //    //    D3D11_TEX1D_SRV Texture1D;
+    //    //    D3D11_TEX1D_ARRAY_SRV Texture1DArray;
+    //    //    D3D11_TEX2D_SRV Texture2D;
+    //    //    D3D11_TEX2D_ARRAY_SRV Texture2DArray;
+    //    //    D3D11_TEX2DMS_SRV Texture2DMS;
+    //    //    D3D11_TEX2DMS_ARRAY_SRV Texture2DMSArray;
+    //    //    D3D11_TEX3D_SRV Texture3D;
+    //    //    D3D11_TEXCUBE_SRV TextureCube;
+    //    //    D3D11_TEXCUBE_ARRAY_SRV TextureCubeArray;
+    //    //    D3D11_BUFFEREX_SRV BufferEx;
+    //    //};
+    //}
+
     [StructLayout(LayoutKind.Sequential)]
+    public struct D3D11_TEX2D_SRV
+    {
+        public uint MostDetailedMip;
+        public uint MipLevels;
+    }
+
+    public enum D3D11_SRV_DIMENSION : int
+    {
+        D3D11_SRV_DIMENSION_UNKNOWN = 0,
+        D3D11_SRV_DIMENSION_BUFFER = 1,
+        D3D11_SRV_DIMENSION_TEXTURE1D = 2,
+        D3D11_SRV_DIMENSION_TEXTURE1DARRAY = 3,
+        D3D11_SRV_DIMENSION_TEXTURE2D = 4,
+        D3D11_SRV_DIMENSION_TEXTURE2DARRAY = 5,
+        D3D11_SRV_DIMENSION_TEXTURE2DMS = 6,
+        D3D11_SRV_DIMENSION_TEXTURE2DMSARRAY = 7,
+        D3D11_SRV_DIMENSION_TEXTURE3D = 8,
+        D3D11_SRV_DIMENSION_TEXTURECUBE = 9,
+        D3D11_SRV_DIMENSION_TEXTURECUBEARRAY = 10,
+        D3D11_SRV_DIMENSION_BUFFEREX = 11
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
     public struct D3D11_SHADER_RESOURCE_VIEW_DESC
     {
+        [FieldOffset(0)]
         public DXGI_FORMAT Format;
-        //public D3D11_SRV_DIMENSION ViewDimension;
-        public D3D_SRV_DIMENSION ViewDimension;
 
-        //    union 
-        //    {
-        //    D3D11_BUFFER_SRV Buffer;
-        //    D3D11_TEX1D_SRV Texture1D;
-        //    D3D11_TEX1D_ARRAY_SRV Texture1DArray;
-        //    D3D11_TEX2D_SRV Texture2D;
-        //    D3D11_TEX2D_ARRAY_SRV Texture2DArray;
-        //    D3D11_TEX2DMS_SRV Texture2DMS;
-        //    D3D11_TEX2DMS_ARRAY_SRV Texture2DMSArray;
-        //    D3D11_TEX3D_SRV Texture3D;
-        //    D3D11_TEXCUBE_SRV TextureCube;
-        //    D3D11_TEXCUBE_ARRAY_SRV TextureCubeArray;
-        //    D3D11_BUFFEREX_SRV BufferEx;
-        //};
+        [FieldOffset(4)]
+        public D3D11_SRV_DIMENSION ViewDimension;
+
+        // Union starts here (offset 8)
+
+        [FieldOffset(8)]
+        public D3D11_TEX2D_SRV Texture2D;
+
+        // (Optional future use)
+        // [FieldOffset(8)]
+        // public D3D11_TEX2D_ARRAY_SRV Texture2DArray;
     }
+
+
+
 
     [ComImport]
     [Guid("ea82e40d-51dc-4f33-93d4-db7c9125ae8c")]
@@ -9978,11 +10048,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -9996,11 +10066,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10036,11 +10106,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10060,11 +10130,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10157,11 +10227,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -10192,11 +10262,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -10210,11 +10280,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -10327,11 +10397,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10349,11 +10419,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10400,11 +10470,16 @@ namespace Direct2D
         #region ID3D11Query
         #region ID3D11Asynchronous
         #region ID3D11DeviceChild
-        //void GetDevice(out ID3D11Device ppDevice);
+        
+        [PreserveSig]
         new void GetDevice(out IntPtr ppDevice);
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        //void GetDevice(out ID3D11Device ppDevice);
+        [PreserveSig]
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
+        [PreserveSig]
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
+        [PreserveSig]
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
         [PreserveSig]
         new uint GetDataSize();
@@ -10426,11 +10501,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
         [PreserveSig]
         new void GetResource(out ID3D11Resource ppResource);
@@ -10484,11 +10559,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
         [PreserveSig]
         new void GetResource(out ID3D11Resource ppResource);
@@ -10538,11 +10613,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10591,11 +10666,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10664,11 +10739,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10724,11 +10799,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10784,11 +10859,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion
 
         [PreserveSig]
@@ -10816,11 +10891,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }   
 
@@ -10834,11 +10909,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -10852,11 +10927,11 @@ namespace Direct2D
         //void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
         [PreserveSig]
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULT GetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, ref uint pDataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULT SetPrivateData([MarshalAs(UnmanagedType.LPStruct)] Guid guid, uint DataSize, IntPtr pData);
         [PreserveSig]
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULT SetPrivateDataInterface([MarshalAs(UnmanagedType.LPStruct)] Guid guid, IntPtr pData);
         #endregion        
     }
 
@@ -10936,19 +11011,29 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
+        [PreserveSig]
         new HRESULT FillMesh(ID2D1Mesh mesh, ID2D1Brush brush);
+        [PreserveSig]
         new HRESULT FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, D2D1_RECT_F destinationRectangle, D2D1_RECT_F sourceRectangle);
+        [PreserveSig]
         new HRESULT FillGeometry(ID2D1Geometry geometry, ID2D1Brush brush, ID2D1Brush opacityBrush);
+        [PreserveSig]
         new HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
-        new HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
+        new HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
         new HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
+        [PreserveSig]
         new HRESULT PopAxisAlignedClip();
+        [PreserveSig]
         new HRESULT PopLayer();
         #endregion
 
+        [PreserveSig]
         HRESULT SetPrimitiveBlend1(D2D1_PRIMITIVE_BLEND primitiveBlend);
     }
 
@@ -11031,9 +11116,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/  IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11096,9 +11181,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11165,9 +11250,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11240,9 +11325,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11320,9 +11405,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11405,9 +11490,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11494,9 +11579,9 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT CreateGdiMetafile(System.Runtime.InteropServices.ComTypes.IStream metafileStream, out ID2D1GdiMetafile metafile);
         [PreserveSig]
-        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromStream([MarshalAs(UnmanagedType.LPStruct)] Guid classId, System.Runtime.InteropServices.ComTypes.IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
-        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, PD2D1_EFFECT_FACTORY effectFactory);
+        new HRESULT RegisterEffectFromString([MarshalAs(UnmanagedType.LPStruct)] Guid classId, [MarshalAs(UnmanagedType.LPWStr)] string propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, int bindingsCount, /*PD2D1_EFFECT_FACTORY*/ IntPtr effectFactory);
         [PreserveSig]
         new HRESULT UnregisterEffect([MarshalAs(UnmanagedType.LPStruct)] Guid classId);
         [PreserveSig]
@@ -11568,16 +11653,25 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
+        [PreserveSig]
         new HRESULT FillMesh(ID2D1Mesh mesh, ID2D1Brush brush);
+        [PreserveSig]
         new HRESULT FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, D2D1_RECT_F destinationRectangle, D2D1_RECT_F sourceRectangle);
+        [PreserveSig]
         new HRESULT FillGeometry(ID2D1Geometry geometry, ID2D1Brush brush, ID2D1Brush opacityBrush);
+        [PreserveSig]
         new HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
-        new HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
+        new HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
         new HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
+        [PreserveSig]
         new HRESULT PopAxisAlignedClip();
+        [PreserveSig]
         new HRESULT PopLayer();
         #endregion
 
@@ -11627,16 +11721,25 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
+        [PreserveSig]
         new HRESULT FillMesh(ID2D1Mesh mesh, ID2D1Brush brush);
+        [PreserveSig]
         new HRESULT FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, D2D1_RECT_F destinationRectangle, D2D1_RECT_F sourceRectangle);
+        [PreserveSig]
         new HRESULT FillGeometry(ID2D1Geometry geometry, ID2D1Brush brush, ID2D1Brush opacityBrush);
+        [PreserveSig]
         new HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
-        new HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
+        new HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
         new HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
+        [PreserveSig]
         new HRESULT PopAxisAlignedClip();
+        [PreserveSig]
         new HRESULT PopLayer();
         #endregion
 
@@ -11692,16 +11795,25 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
-        new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);       
+        new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
+        [PreserveSig]
         new HRESULT FillMesh(ID2D1Mesh mesh, ID2D1Brush brush);
+        [PreserveSig]
         new HRESULT FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, D2D1_RECT_F destinationRectangle, D2D1_RECT_F sourceRectangle);
+        [PreserveSig]
         new HRESULT FillGeometry(ID2D1Geometry geometry, ID2D1Brush brush, ID2D1Brush opacityBrush);
+        [PreserveSig]
         new HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
-        new HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
+        new HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
         new HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
+        [PreserveSig]
         new HRESULT PopAxisAlignedClip();
+        [PreserveSig]
         new HRESULT PopLayer();
         #endregion
 
@@ -11762,19 +11874,29 @@ namespace Direct2D
         [PreserveSig]
         new HRESULT DrawBitmap(ID2D1Bitmap bitmap, D2D1_RECT_F destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_RECT_F sourceRectangle, D2D1_MATRIX_4X4_F perspectiveTransform);
         [PreserveSig]
-        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+        //new HRESULT DrawImage(ID2D1Image image, ref D2D1_POINT_2F targetOffset, D2D1_RECT_F imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
         [PreserveSig]
         new HRESULT DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, ref D2D1_POINT_2F targetOffset);
+        [PreserveSig]
         new HRESULT FillMesh(ID2D1Mesh mesh, ID2D1Brush brush);
+        [PreserveSig]
         new HRESULT FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, D2D1_RECT_F destinationRectangle, D2D1_RECT_F sourceRectangle);
+        [PreserveSig]
         new HRESULT FillGeometry(ID2D1Geometry geometry, ID2D1Brush brush, ID2D1Brush opacityBrush);
+        [PreserveSig]
         new HRESULT FillRectangle(D2D1_RECT_F rect, ID2D1Brush brush);
-        new HRESULT PushAxisAlignedClip(D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
+        new HRESULT PushAxisAlignedClip(ref D2D1_RECT_F clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
+        [PreserveSig]
         new HRESULT PushLayer(ref D2D1_LAYER_PARAMETERS1 layerParameters1, ID2D1Layer layer);
+        [PreserveSig]
         new HRESULT PopAxisAlignedClip();
+        [PreserveSig]
         new HRESULT PopLayer();
         #endregion
 
+        [PreserveSig]
         new HRESULT SetPrimitiveBlend1(D2D1_PRIMITIVE_BLEND primitiveBlend);
         #endregion
 

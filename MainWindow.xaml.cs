@@ -107,12 +107,12 @@ namespace WinUI3_SwapChainPanel_Direct2D
             randColor = new Random();
 
             HRESULT hr = CreateD2D1Factory();
-            if (hr == HRESULT.S_OK)
+            if (SUCCEEDED(hr))
             {
                 hr = CreateDeviceContext();
                 hr = CreateDeviceResources();
                 hr = CreateSwapChain(IntPtr.Zero);
-                if (hr == HRESULT.S_OK)
+                if (SUCCEEDED(hr))
                 {
                     hr = ConfigureSwapChain();
                     ISwapChainPanelNative panelNative = WinRT.CastExtensions.As<ISwapChainPanelNative>(scpD2D);
@@ -264,7 +264,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                     DXGI_FRAME_STATISTICS fs = new DXGI_FRAME_STATISTICS();
                     hr = m_pDXGISwapChain1.GetFrameStatistics(out fs);
                     // 0x887A000B DXGI_ERROR_FRAME_STATISTICS_DISJOINT            
-                    if (hr == HRESULT.S_OK)
+                    if (SUCCEEDED(hr))
                     {
                         ulong nCurrentTime = (ulong)fs.SyncQPCTime.QuadPart;
                         nNbTotalFrames += fs.PresentCount - nLastNbFrames;
@@ -334,7 +334,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                     {
                         s.X += ((rand.NextSingle()) * s.StepX);
                         s.Y += ((rand.NextSingle()) * s.StepY);
-                        s.Move(m_pD2DDeviceContext3, 0, true);
+                        s.Move(new D2D1_SIZE_F(size.width, size.height), m_pD2DDeviceContext3, CSprite.HORIZONTALFLIP.LEFT, CSprite.BOUNCE.BOTH);
                         s.Draw(m_pD2DDeviceContext3, s.CurrentIndex, 1, true);
                         s.CurrentIndex++;
                     }
@@ -342,7 +342,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                     {
                         spriteBird.X += spriteBird.StepX;
                         spriteBird.Y += spriteBird.StepY;
-                        spriteBird.Move(m_pD2DDeviceContext3, spriteBird.HORIZONTALFLIP_RIGHT, true);
+                        spriteBird.Move(new D2D1_SIZE_F(size.width, size.height), m_pD2DDeviceContext3, CSprite.HORIZONTALFLIP.RIGHT, CSprite.BOUNCE.BOTH);
                         spriteBird.Draw(m_pD2DDeviceContext3, spriteBird.CurrentIndex, 1, true);
                         spriteBird.CurrentIndex++;
                     }
@@ -431,7 +431,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                                              //out pD3D11DeviceContextPtr                    // returns the device immediate context
                 out m_pD3D11DeviceContext
             );
-            if (hr == HRESULT.S_OK)
+            if (SUCCEEDED(hr))
             {
                 //m_pD3D11DeviceContext = Marshal.GetObjectForIUnknown(pD3D11DeviceContextPtr) as ID3D11DeviceContext;             
 
@@ -439,7 +439,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                 if (m_pD2DFactory1 != null)
                 {
                     hr = m_pD2DFactory1.CreateDevice(m_pDXGIDevice, out m_pD2DDevice);
-                    if (hr == HRESULT.S_OK)
+                    if (SUCCEEDED(hr))
                     {
                         hr = m_pD2DDevice.CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS.D2D1_DEVICE_CONTEXT_OPTIONS_NONE, out m_pD2DDeviceContext);
                         SafeRelease(ref m_pD2DDevice);
@@ -468,18 +468,20 @@ namespace WinUI3_SwapChainPanel_Direct2D
 
             IDXGIAdapter pDXGIAdapter;
             hr = m_pDXGIDevice.GetAdapter(out pDXGIAdapter);
-            if (hr == HRESULT.S_OK)
+            if (SUCCEEDED(hr))
             {
                 IntPtr pDXGIFactory2Ptr;
                 hr = pDXGIAdapter.GetParent(typeof(IDXGIFactory2).GUID, out pDXGIFactory2Ptr);
-                if (hr == HRESULT.S_OK)
+                if (SUCCEEDED(hr))
                 {
                     IDXGIFactory2 pDXGIFactory2 = Marshal.GetObjectForIUnknown(pDXGIFactory2Ptr) as IDXGIFactory2;
                     if (hWnd != IntPtr.Zero)
                         hr = pDXGIFactory2.CreateSwapChainForHwnd(m_pD3D11DevicePtr, hWnd, ref swapChainDesc, IntPtr.Zero, null, out m_pDXGISwapChain1);
                     else
+                    {
+                        swapChainDesc.AlphaMode = DXGI_ALPHA_MODE.DXGI_ALPHA_MODE_PREMULTIPLIED;
                         hr = pDXGIFactory2.CreateSwapChainForComposition(m_pD3D11DevicePtr, ref swapChainDesc, null, out m_pDXGISwapChain1);
-
+                    }
                     hr = m_pDXGIDevice.SetMaximumFrameLatency(1);
                     SafeRelease(ref pDXGIFactory2);
                     Marshal.Release(pDXGIFactory2Ptr);
@@ -508,11 +510,11 @@ namespace WinUI3_SwapChainPanel_Direct2D
 
             IntPtr pDXGISurfacePtr = IntPtr.Zero;
             hr = m_pDXGISwapChain1.GetBuffer(0, typeof(IDXGISurface).GUID, out pDXGISurfacePtr);
-            if (hr == HRESULT.S_OK)
+            if (SUCCEEDED(hr))
             {
                 IDXGISurface pDXGISurface = Marshal.GetObjectForIUnknown(pDXGISurfacePtr) as IDXGISurface;
                 hr = m_pD2DDeviceContext.CreateBitmapFromDxgiSurface(pDXGISurface, ref bitmapProperties, out m_pD2DTargetBitmap);
-                if (hr == HRESULT.S_OK)
+                if (SUCCEEDED(hr))
                 {
                     m_pD2DDeviceContext.SetTarget(m_pD2DTargetBitmap);
                 }
@@ -592,22 +594,22 @@ namespace WinUI3_SwapChainPanel_Direct2D
 
             IWICStream wicStream = null;
             hr = (HRESULT)m_pWICImagingFactory.CreateStream(out wicStream);
-            if (hr == HRESULT.S_OK)
+            if (SUCCEEDED(hr))
             {
                 hr = (HRESULT)wicStream.InitializeFromMemory(bytes, bytes.Length);
-                if (hr == HRESULT.S_OK)
+                if (SUCCEEDED(hr))
                 {
                     IWICBitmapDecoder pDecoder = null;
                     hr = (HRESULT)m_pWICImagingFactory.CreateDecoderFromStream(wicStream, Guid.Empty, WICDecodeOptions.WICDecodeMetadataCacheOnDemand, out pDecoder);
-                    if (hr == HRESULT.S_OK)
+                    if (SUCCEEDED(hr))
                     {
                         IWICBitmapFrameDecode pFrame = null;
                         hr = (HRESULT)pDecoder.GetFrame(0, out pFrame);
-                        if (hr == HRESULT.S_OK)
+                        if (SUCCEEDED(hr))
                         {
                             IWICFormatConverter pConvertedSourceBitmap = null;
                             hr = (HRESULT)m_pWICImagingFactory.CreateFormatConverter(out pConvertedSourceBitmap);
-                            if (hr == HRESULT.S_OK)
+                            if (SUCCEEDED(hr))
                             {
                                 hr = (HRESULT)pConvertedSourceBitmap.Initialize(
                                     (IWICBitmapSource)pFrame,        // Input bitmap to convert
@@ -617,7 +619,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
                                     0,                             // Alpha threshold
                                     WICBitmapPaletteType.WICBitmapPaletteTypeCustom       // Palette translation type
                                     );
-                                if (hr == HRESULT.S_OK)
+                                if (SUCCEEDED(hr))
                                 {
                                     D2D1_BITMAP_PROPERTIES bitmapproperties = new D2D1_BITMAP_PROPERTIES();
                                     hr = m_pD2DDeviceContext.CreateBitmapFromWicBitmap(pConvertedSourceBitmap, ref bitmapproperties, out pD2DBitmap);

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Direct2D;
 using System.Runtime.InteropServices;
 using GlobalStructures;
-using static GlobalStructures.GlobalTools;
 
 namespace WinUI3_SwapChainPanel_Direct2D
 {
@@ -24,11 +23,24 @@ namespace WinUI3_SwapChainPanel_Direct2D
         private uint m_nNbImagesY = 1;
         private uint m_nNbImages = 1;
 
-        public int HORIZONTALFLIP_RIGHT = 1;
-        public int HORIZONTALFLIP_LEFT = 2;
+        public enum HORIZONTALFLIP : int
+        {
+            LEFT = 0,
+            RIGHT
+        }
+
+        public enum BOUNCE : int
+        {
+            HORIZONTAL = 0,
+            VERTICAL,
+            BOTH, 
+            NONE
+        }
 
         public int Width = 0;
         public int Height = 0;
+        public long StartTime = 0;
+        public string Tag = "";
 
         private uint m_nCurrentIndex = 0;
         public uint CurrentIndex
@@ -130,10 +142,18 @@ namespace WinUI3_SwapChainPanel_Direct2D
             pDC.DrawSpriteBatch(m_pSpriteBatch, nSpriteIndex, nSpriteCount, m_pBitmap);
         }
 
-        public void Move(ID2D1DeviceContext3 pDC, int nHorizontalFlip, bool bBounce)
+        public void Move(D2D1_SIZE_F nClientSize, ID2D1DeviceContext3 pDC, HORIZONTALFLIP nHorizontalFlip, BOUNCE nBounce)
         {
             HRESULT hr = HRESULT.S_OK;
-            pDC.GetSize( out D2D1_SIZE_F size);
+            D2D1_SIZE_F size;
+            if (!nClientSize.Equals(default(D2D1_SIZE_F)))
+            {
+                size = nClientSize;
+            }
+            else
+            {
+                pDC.GetSize(out size);
+            }
             m_pBitmap.GetSize(out D2D1_SIZE_F bmpSize);
 
             float nWidth = bmpSize.width / m_nNbImagesX;
@@ -153,7 +173,7 @@ namespace WinUI3_SwapChainPanel_Direct2D
             m_pRectDest[0].bottom = m_pRectDest[0].top + nHeight;
 
             // Tests to bounce the sprite
-            if (bBounce)
+            if (nBounce == BOUNCE.BOTH)
             {
                 if (m_pRectDest[0].left >= size.width - nWidth)
                 {
@@ -175,11 +195,60 @@ namespace WinUI3_SwapChainPanel_Direct2D
                     m_nStepY = Math.Abs(m_nStepY);
                     m_pRectDest[0].top = 0;
                 }
+            } 
+            else if (nBounce == BOUNCE.HORIZONTAL)
+            {
+                if (m_pRectDest[0].left >= size.width - nWidth)
+                {
+                    m_nStepX = -Math.Abs(m_nStepX);
+                    m_pRectDest[0].left = size.width - nWidth;
+                }
+                if (m_pRectDest[0].left <= 0)
+                {
+                    m_nStepX = Math.Abs(m_nStepX);
+                    m_pRectDest[0].left = 0;
+                }
+
+                if (m_pRectDest[0].top >= size.height && m_nStepY >= 0)
+                {
+                    m_pRectDest[0].top = 0 - bmpSize.height / m_nNbImagesY;
+                    m_pRectDest[0].bottom = m_pRectDest[0].top + bmpSize.height / m_nNbImagesY;
+                }
+                if (m_pRectDest[0].bottom <= 0 && m_nStepY < 0)
+                {                    
+                    m_pRectDest[0].top = size.height;
+                    m_pRectDest[0].bottom = m_pRectDest[0].top + bmpSize.height / m_nNbImagesY;
+                }            
+
+            }
+            else if (nBounce == BOUNCE.VERTICAL)
+            {
+                if (m_pRectDest[0].top >= size.height - nHeight)
+                {
+                    m_nStepY = -Math.Abs(m_nStepY);
+                    m_pRectDest[0].top = size.height - nHeight;
+                }               
+                if (m_pRectDest[0].top <= 0)
+                {
+                    m_nStepY = Math.Abs(m_nStepY);
+                    m_pRectDest[0].top = 0;
+                }
+
+                if (m_pRectDest[0].left >= size.width && m_nStepX >= 0)
+                {                   
+                    m_pRectDest[0].left = 0 - bmpSize.width / m_nNbImagesX;
+                    m_pRectDest[0].right = m_pRectDest[0].left + bmpSize.width / m_nNbImagesX;
+                }
+                if (m_pRectDest[0].right <= 0 && m_nStepX < 0)
+                {                   
+                    m_pRectDest[0].left = size.width;
+                    m_pRectDest[0].right = m_pRectDest[0].left + bmpSize.width / m_nNbImagesX;
+                }
             }
 
-            if (nHorizontalFlip == HORIZONTALFLIP_RIGHT || nHorizontalFlip == HORIZONTALFLIP_LEFT)
+            if (nHorizontalFlip == HORIZONTALFLIP.LEFT || nHorizontalFlip == HORIZONTALFLIP.RIGHT)
             {
-                if (m_nStepX >= 0 && nHorizontalFlip == HORIZONTALFLIP_RIGHT || m_nStepX < 0 && nHorizontalFlip == HORIZONTALFLIP_LEFT)
+                if (m_nStepX >= 0 && nHorizontalFlip == HORIZONTALFLIP.RIGHT || m_nStepX < 0 && nHorizontalFlip == HORIZONTALFLIP.LEFT)
                 {
                     int n = 0;
                     for (uint j = 0; j < m_nNbImagesY; j++)
@@ -209,8 +278,9 @@ namespace WinUI3_SwapChainPanel_Direct2D
 
         public void Dispose()
         {
-            m_pSpriteBatch.Clear();            
-            SafeRelease(ref m_pSpriteBatch);            
+            m_pSpriteBatch.Clear();
+            Marshal.ReleaseComObject(m_pSpriteBatch);
+            m_pSpriteBatch = null;
         }
     }
 }
